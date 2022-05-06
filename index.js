@@ -9,7 +9,7 @@ app.use(express.json());
 
 // Connect Database (Mongodb).
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.buxdo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -24,6 +24,15 @@ async function run(){
                 const cursor = inventoryCollection.find(quarry);
                 const inventory = await cursor.toArray();
                 res.send(inventory);
+            })
+
+
+            // Delete
+            app.delete('/inventory/:id',async(req,res) =>{
+                const id = req.params.id;
+                const quarry = {_id:ObjectId(id)};
+                const result = await inventoryCollection.deleteOne(quarry);
+                res.send(result);
             })
     }
     finally{
