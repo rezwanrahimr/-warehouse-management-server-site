@@ -34,6 +34,20 @@ async function run(){
                 const result = await inventoryCollection.deleteOne(quarry);
                 res.send(result);
             })
+            /* // find one and update.
+            app.patch('/inventory/:id',async(req,res) =>{
+                console.log(req.body.quantity)
+                const id = req.params.id;
+                const quarry = {_id:ObjectId(id)};
+                const result = await inventoryCollection.updateOne(quarry,{$set:{quantity:req.body.quantity}});
+                if(result.modifiedCount > 0){
+                    res.send({status:1,message:'Order Place'})
+                }
+                else{
+                    res.send({status:0,message:'Order Place faild'})
+                }
+               
+            }) */
 
             //add new items
             app.post('/inventory',async(req,res) =>{
@@ -41,6 +55,7 @@ async function run(){
                 const result = await inventoryCollection.insertOne(newItem);
                 res.send(result);
             })
+
     }
     finally{
 
