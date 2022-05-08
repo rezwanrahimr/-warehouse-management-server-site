@@ -18,7 +18,7 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
-// AUTH
+// post mathod -
 app.post('/login',async(req,res)=>{
   const user = req.body;
   const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN,{
@@ -34,7 +34,7 @@ async function run() {
       .db("oracleInventory")
       .collection("inventory");
 
-    // get mathod -  find all data
+    // get mathod -  
     app.get("/inventory", async (req, res) => {
       const quarry = {};
       const cursor = inventoryCollection.find(quarry);
@@ -42,6 +42,7 @@ async function run() {
       res.send(inventory);
     });
 
+    // get mathod -
     app.get("/manage-inventory", async (req, res) => {
       const { email } = req.query;
       const cursor = inventoryCollection.find({ email });
@@ -59,21 +60,21 @@ async function run() {
       }
     });
 
-    //add new items
+    //Add New Item
     app.post("/inventory", async (req, res) => {
       const newItem = req.body;
       const result = await inventoryCollection.insertOne(newItem);
       res.send(result);
     });
 
-    // Delete
+    // Delete Item
     app.delete("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const quarry = { _id: ObjectId(id) };
       const result = await inventoryCollection.deleteOne(quarry);
       res.send(result);
     });
-    // find one and update.
+    // post mathod -
     app.post("/checkout/:id", async (req, res) => {
       console.log(req.body.quantity);
       if (Number(req.body.quantity < 0)) {
@@ -92,6 +93,7 @@ async function run() {
       }
     });
 
+    // post mathod -
     app.post("/re_stock/:id", async (req, res) => {
       if (Number(req.body.quantity < 0)) {
         res.send({ status: 0, message: "Oops! Restock Faild." });
