@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 app.use(cors());
@@ -16,6 +17,15 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
+// AUTH
+app.post('/login',async(req,res)=>{
+  const user = req.body;
+  const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN,{
+    expiresIn: '1d'
+  })
+  res.send({accessToken});
+})
 
 async function run() {
   try {
